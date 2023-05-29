@@ -1,6 +1,7 @@
 <template>
-	<label> {{ label }} </label>
+	<label for="username"> {{ label }} </label>
 	<input
+		id="username"
 		v-bind="$attrs"
 		:placeholder="label"
 		:value="modelValue"

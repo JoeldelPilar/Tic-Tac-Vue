@@ -1,7 +1,10 @@
 <template>
 	<h2>Tic Tac Toe - app component</h2>
 
-	<div class="players__container">
+	<div
+		class="players__container"
+		v-if="!(playerX.isActive && playerO.isActive)"
+	>
 		<BaseInput
 			v-if="!playerX.isActive"
 			v-model="playerX.playerName"
@@ -27,6 +30,14 @@
 			Play!
 		</button>
 	</div>
+	<!-- Skicka ner spelar namnet och markören till GameBoard -->
+	<!-- Ta emot den klickade rutan och skicka till beräkning -->
+	<GameBoard
+		v-else
+		:playerName="currentPlayer.playerName"
+		:marker="currentPlayer.marker"
+		@playerMove="handlePlayerMove"
+	/>
 </template>
 
 <script setup lang="ts">
@@ -50,14 +61,25 @@
 		isActive: false,
 	});
 
-	let players = [] as object[];
+	let players: Player[] = [];
+
+	const currentPlayer = ref({
+		playerName: '',
+		marker: '',
+	});
 
 	const savePlayer = (player: Player) => {
 		if (player.playerName === '') return;
 		player.isActive = true;
 		players = [...players, player];
+		currentPlayer.value.playerName = players[0].playerName;
 
-		console.log(players);
+		console.log(currentPlayer);
+	};
+
+	const handlePlayerMove = (position: number, player: string) => {
+		currentPlayer.value.marker = player;
+		console.log('klick');
 	};
 </script>
 

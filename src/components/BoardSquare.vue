@@ -1,7 +1,7 @@
 <template>
 	<button
 		@click="handleClick"
-		:disabled="gotSelected"
+		:class="{ disabled: gotSelected }"
 	>
 		<span>{{ marker }}</span>
 	</button>
@@ -20,12 +20,13 @@
 
 	const id = props.index;
 	const gotSelected = ref(false);
-	const marker = ref('');
+	const marker = toRef('');
 	const reset = toRef(props.reset);
 
 	watch(reset, (isReseted, isNotReseted) => {
 		console.log(isNotReseted, isReseted);
 		if (isReseted) {
+			reset.value = true;
 			marker.value = '';
 		}
 	});
@@ -50,5 +51,9 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
+	}
+
+	.disabled {
+		pointer-events: none;
 	}
 </style>

@@ -7,12 +7,12 @@
 				alt="Letter V in green color"
 			/>
 		</h1>
-		<TictactoeApp />
+		<TictacApp />
 	</main>
 </template>
 
 <script setup lang="ts">
-	import TictactoeApp from './components/TictactoeApp.vue';
+	import TictacApp from './components/TicTacApp.vue';
 </script>
 
 <style scoped></style>

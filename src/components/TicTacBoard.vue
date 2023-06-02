@@ -2,7 +2,7 @@
 	import { ref } from 'vue';
 	import { Square, squares } from '../models/Squares';
 	import { Player } from '../models/Player';
-	import { score } from '../models/IScores';
+	import { score } from '../models/IScore';
 
 	const emits = defineEmits(['showScoreboard']);
 
@@ -112,7 +112,7 @@
 	<h2 v-else-if="winner.state === true || draw === false">
 		{{ winner?.name }} is the Winner!, 🥳
 	</h2>
-	<h2 v-else>Its a Draw</h2>
+	<h2 v-else>Its a Draw ⚒️</h2>
 
 	<div class="tic__tac__board">
 		<button

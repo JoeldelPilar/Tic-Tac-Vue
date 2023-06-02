@@ -3,7 +3,7 @@
 	import TicTacBoard from './TicTacBoard.vue';
 	import CreatePlayers from './CreatePlayers.vue';
 	import ScoreBoard from './ScoreBoard.vue';
-	import { score } from '../models/IScores';
+	import { score } from '../models/IScore';
 
 	const playersList = ref<object[]>([]);
 	const scoreboard = ref(false);

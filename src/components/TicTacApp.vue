@@ -18,6 +18,10 @@
 		scoreboardValues.value = score;
 		console.log('click');
 	};
+
+	const resetGame = () => {
+		playersList.value = [];
+	};
 </script>
 
 <template>
@@ -29,6 +33,7 @@
 			:playerX="playersList[0]"
 			:playerO="playersList[1]"
 			@showScoreboard="showScoreboard"
+			@startOver="resetGame"
 		/>
 	</div>
 

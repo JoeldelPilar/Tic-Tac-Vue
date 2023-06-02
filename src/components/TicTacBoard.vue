@@ -4,7 +4,7 @@
 	import { Player } from '../models/Player';
 	import { score } from '../models/IScore';
 
-	const emits = defineEmits(['showScoreboard']);
+	const emits = defineEmits(['showScoreboard', 'startOver']);
 
 	const props = defineProps({
 		playerX: Object,
@@ -102,6 +102,11 @@
 	const openScoreboard = () => {
 		emits('showScoreboard', scores.value);
 	};
+
+	const totalResetGame = () => {
+		emits('startOver');
+		startNewGame();
+	};
 </script>
 
 <template>
@@ -139,6 +144,12 @@
 			@click="openScoreboard"
 		>
 			Scoreboard
+		</button>
+		<button
+			class="player__interactive__btn"
+			@click="totalResetGame"
+		>
+			start over
 		</button>
 	</div>
 </template>

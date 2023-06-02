@@ -1,7 +1,7 @@
 export class Player {
   constructor(
-    public playerName: string,
-    public marker: string,
-    public isActive: boolean 
+  public name: string,
+  public type: string,
+  public state: boolean
   ){}
 }

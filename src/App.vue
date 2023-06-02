@@ -15,4 +15,8 @@
 	import TictacApp from './components/TicTacApp.vue';
 </script>
 
-<style scoped></style>
+<style>
+	body {
+		position: relative;
+	}
+</style>

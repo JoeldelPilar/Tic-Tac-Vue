@@ -1,12 +1,14 @@
 <template>
-	<label for="username"> {{ label }} </label>
-	<input
-		id="username"
-		v-bind="$attrs"
-		:placeholder="label"
-		:value="modelValue"
-		@input="emitToParent"
-	/>
+	<div>
+		<label class="base__input">
+			{{ label }}
+			<input
+				v-bind="$attrs"
+				:placeholder="label"
+				:value="modelValue"
+				@input="emitToParent"
+		/></label>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -32,5 +34,12 @@
 <style scoped>
 	input {
 		margin-block-end: 1rem;
+	}
+
+	.base__input {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		text-align: start;
 	}
 </style>

@@ -21,7 +21,11 @@
 
 	const startGame = () => {
 		playerO.value.state = true;
-		emits('startGame', [playerX, playerO]);
+		// localStorage.setItem(
+		// 	'players',
+		// 	JSON.stringify([playerX.value, playerO.value])
+		// );
+		emits('startGame', [playerX.value, playerO.value]);
 	};
 </script>
 

@@ -4,13 +4,18 @@
 	import CreatePlayers from './CreatePlayers.vue';
 	import ScoreBoard from './ScoreBoard.vue';
 	import { score } from '../models/IScore';
+	import { Player } from '../models/Player';
 
-	const playersList = ref<object[]>([]);
+	const playersList = ref<Player[]>(
+		JSON.parse(localStorage.getItem('players') || '[]')
+	);
 	const scoreboard = ref(false);
 	const scoreboardValues = ref<score[]>([]);
 
-	const setupGame = (players: object[]) => {
+	const setupGame = (players: Player[]) => {
 		playersList.value = players;
+		localStorage.setItem('players', JSON.stringify(playersList.value));
+		console.log(playersList.value);
 	};
 
 	const showScoreboard = (score: score[]) => {
@@ -30,8 +35,7 @@
 	</div>
 	<div v-if="playersList.length === 2">
 		<TicTacBoard
-			:playerX="playersList[0]"
-			:playerO="playersList[1]"
+			:playersList="playersList"
 			@showScoreboard="showScoreboard"
 			@startOver="resetGame"
 		/>

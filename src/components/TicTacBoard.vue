@@ -27,9 +27,8 @@
 
 	const playerX = props.playersList[0];
 	const playerO = props.playersList[1];
-	const player = ref(
-		JSON.parse(localStorage.getItem('activePlayer') || `${playerX}`)
-	);
+	const activePlayer = localStorage.getItem('activePlayer');
+	const player = ref(activePlayer ? JSON.parse(activePlayer) : playerX);
 	const winner = ref<Player>({
 		name: '',
 		type: '',
@@ -132,6 +131,7 @@
 		localStorage.removeItem('scores');
 		localStorage.removeItem('players');
 		localStorage.removeItem('gameBoard');
+		localStorage.removeItem('activePlayer');
 		startNewGame();
 	};
 </script>

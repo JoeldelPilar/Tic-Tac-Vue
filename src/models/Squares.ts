@@ -6,7 +6,7 @@ export interface Square {
   disabled: boolean;
 }
 
-export const squares = ref<Square[]>([
+export const squares = JSON.stringify([
   { id: 1, mark: '' , disabled: false},
   { id: 2, mark: '' , disabled: false},
   { id: 3, mark: '' , disabled: false},

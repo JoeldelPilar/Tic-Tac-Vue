@@ -1,30 +1,50 @@
 <script setup lang="ts">
-	import { ref } from 'vue';
+	import { PropType, onMounted, ref } from 'vue';
 	import { Square, squares } from '../models/Squares';
 	import { Player } from '../models/Player';
 	import { score } from '../models/IScore';
 
-	const emits = defineEmits(['showScoreboard']);
-
-	const props = defineProps({
-		playerX: Object,
-		playerO: Object,
+	onMounted(() => {
+		const savedBoard = JSON.parse(
+			localStorage.getItem('gameBoard') || `${squares}`
+		);
+		calculateWinner(savedBoard);
 	});
 
-	const playerX = props.playerX?.value;
-	const playerO = props.playerO?.value;
-	const player = ref(props.playerX);
+	interface TicTacToeBoardProps {
+		playersList: Player[];
+	}
+
+	const emits = defineEmits(['showScoreboard', 'startOver']);
+
+	const props = defineProps<TicTacToeBoardProps>();
+	// playerX: Player,
+	// playerO: Player,
+
+	const gameBoard = ref<Square[]>(
+		JSON.parse(localStorage.getItem('gameBoard') || `${squares}`)
+	);
+
+	const playerX = props.playersList[0];
+	const playerO = props.playersList[1];
+	const player = ref(
+		JSON.parse(localStorage.getItem('activePlayer') || `${playerX}`)
+	);
 	const winner = ref<Player>({
 		name: '',
 		type: '',
 		state: false,
 	});
 	const draw = ref(false);
-	const scores = ref<score[]>([]);
+	const scores = ref<score[]>(
+		JSON.parse(localStorage.getItem('scores') || '[]')
+	);
+
+	console.log(playerX, playerO);
 
 	const handlePlayerMove = (squareId: number) => {
 		player.value = player.value === playerX ? playerO : playerX;
-		const placeMarker = squares.value.map((square) => {
+		const placeMarker = gameBoard.value.map((square) => {
 			if (square.id === squareId) {
 				return {
 					...square,
@@ -32,9 +52,11 @@
 					disabled: true,
 				};
 			}
+			localStorage.setItem('activePlayer', JSON.stringify(player.value));
 			return square;
 		});
-		squares.value = placeMarker;
+		gameBoard.value = placeMarker;
+		localStorage.setItem('gameBoard', JSON.stringify(gameBoard.value));
 		calculateWinner(placeMarker);
 	};
 
@@ -88,10 +110,11 @@
 		} else {
 			scores.value = [...scores.value, { name: winner, points: 1 }];
 		}
+		localStorage.setItem('scores', JSON.stringify(scores.value));
 	};
 
 	const startNewGame = () => {
-		squares.value.map((square) => {
+		gameBoard.value.map((square) => {
 			square.disabled = false;
 			square.mark = '';
 			draw.value = false;
@@ -102,6 +125,15 @@
 	const openScoreboard = () => {
 		emits('showScoreboard', scores.value);
 	};
+
+	const totalResetGame = () => {
+		emits('startOver');
+		scores.value = [];
+		localStorage.removeItem('scores');
+		localStorage.removeItem('players');
+		localStorage.removeItem('gameBoard');
+		startNewGame();
+	};
 </script>
 
 <template>
@@ -110,14 +142,14 @@
 		{{ player?.name }}'s turn to move
 	</h2>
 	<h2 v-else-if="winner.state === true || draw === false">
-		{{ winner?.name }} is the Winner!, 🥳
+		{{ winner.name }} is the Winner!, 🥳
 	</h2>
 	<h2 v-else>Its a Draw ⚒️</h2>
 
 	<div class="tic__tac__board">
 		<button
 			class="square"
-			v-for="square in squares"
+			v-for="square in gameBoard"
 			:key="square.id"
 			:disabled="square.disabled || winner.state"
 			@click="handlePlayerMove(square.id)"
@@ -139,6 +171,12 @@
 			@click="openScoreboard"
 		>
 			Scoreboard
+		</button>
+		<button
+			class="player__interactive__btn reset__btn"
+			@click="totalResetGame"
+		>
+			reset game
 		</button>
 	</div>
 </template>
@@ -180,5 +218,9 @@
 
 	.player__interactive__btn {
 		text-transform: uppercase;
+	}
+
+	.reset__btn {
+		background-color: #b84a42;
 	}
 </style>
